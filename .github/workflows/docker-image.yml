@@ -2,12 +2,11 @@ name: Docker Build
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches: [ master, $default-branch ]
   pull_request:
-    branches: [ $default-branch ]
+    branches: [ master, $default-branch ]
 
 jobs:
-
   build:
 
     runs-on: ubuntu-latest
