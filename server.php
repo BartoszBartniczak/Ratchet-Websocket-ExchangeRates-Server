@@ -9,6 +9,8 @@ use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
 
+const REFRESH_TIME = 0.2;
+
 $currencies = ['PLN', 'EUR', 'USD', 'CHF'];
 $generator = new Generator();
 $currentExchangeRates = $generator->generate($currencies);
@@ -24,7 +26,7 @@ $server = IoServer::factory(
 $exchangeRates->setLoop($server->loop);
 $exchangeRates->setExchangeRates($currentExchangeRates);
 
-$server->loop->addPeriodicTimer(3, function () use (&$currentExchangeRates, $exchangeRates, $generator){
+$server->loop->addPeriodicTimer(REFRESH_TIME, function () use (&$currentExchangeRates, $exchangeRates, $generator){
     $currentExchangeRates = $generator->generateChanges($currentExchangeRates);
     $exchangeRates->setExchangeRates($currentExchangeRates);
 });

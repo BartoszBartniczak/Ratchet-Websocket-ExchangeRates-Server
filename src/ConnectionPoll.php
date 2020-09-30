@@ -29,7 +29,7 @@ class ConnectionPoll implements MessageComponentInterface
     {
         $this->sendNewExchangeRate($conn);
 
-        $timer = $this->loop->addPeriodicTimer(3, function () use ($conn) {
+        $timer = $this->loop->addPeriodicTimer(REFRESH_TIME, function () use ($conn) {
             $this->sendNewExchangeRate($conn);
         });
 
@@ -52,7 +52,6 @@ class ConnectionPoll implements MessageComponentInterface
     {
         // TODO: Implement onMessage() method.
     }
-
 
     public function setLoop($loop)
     {
