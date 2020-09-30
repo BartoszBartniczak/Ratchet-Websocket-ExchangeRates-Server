@@ -6,26 +6,19 @@ use Exception;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use React\EventLoop\LoopInterface;
-use React\EventLoop\TimerInterface;
 use SplObjectStorage;
 
-class ExchangeRates implements MessageComponentInterface
+class ConnectionPoll implements MessageComponentInterface
 {
 
-    /**
-     * @var SplObjectStorage
-     */
-    private $connections;
+    private SplObjectStorage $connections;
+
+    private LoopInterface $loop;
 
     /**
-     * @var LoopInterface
+     * @var float[]
      */
-    private $loop;
-
-    /**
-     * @var float
-     */
-    private $exchangeRate;
+    private array $exchangeRates;
 
     public function __construct()
     {
@@ -66,17 +59,28 @@ class ExchangeRates implements MessageComponentInterface
         $this->loop = $loop;
     }
 
-    /**
-     * @param float $exchangeRate
-     */
-    public function setExchangeRate($exchangeRate)
+    public function setExchangeRates(array $exchangeRates)
     {
-        $this->exchangeRate = $exchangeRate;
+        $this->exchangeRates = $exchangeRates;
     }
 
-    protected function sendNewExchangeRate(ConnectionInterface $conn)
+    private function sendNewExchangeRate(ConnectionInterface $conn)
     {
-        $conn->send(json_encode(['exchangeRate' => number_format($this->exchangeRate, 4, '.', '')]));
+
+        $conn->send(json_encode(['exchangeRates' => $this->formatExchangeRates()]));
+    }
+
+    /**
+     * @return array|string[]
+     */
+    private function formatExchangeRates()
+    {
+        return array_map(function (array $exchangeRates) {
+            return [
+                'buy'=>number_format($exchangeRates['buy'], 4, '.', ''),
+                'sell'=>number_format($exchangeRates['sell'], 4, '.', '')
+            ];
+        }, $this->exchangeRates);
     }
 
 

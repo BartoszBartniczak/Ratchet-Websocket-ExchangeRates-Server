@@ -1,17 +1,18 @@
 {
-    "name": "bartoszbartniczak/ratchet-websocket-exchange-rate",
-    "require": {
-        "cboden/ratchet": "^0.4.3"
-    },
-    "authors": [
-        {
-            "name": "Bartosz Bartniczak",
-            "email": "bartoszbartniczak@gmail.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "BartoszBartniczak\\Ratchet\\Websocket\\ExchangeRate\\": "src/"
-        }
+  "name": "bartoszbartniczak/ratchet-websocket-exchange-rate",
+  "require": {
+    "cboden/ratchet": "^0.4.3",
+    "ext-json": "*"
+  },
+  "authors": [
+    {
+      "name": "Bartosz Bartniczak",
+      "email": "bartoszbartniczak@gmail.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "BartoszBartniczak\\Ratchet\\Websocket\\ExchangeRate\\": "src/"
+    }
+  }
 }
